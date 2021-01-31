@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
+import 'package:youtubebloc/constants.dart';
 import 'package:youtubebloc/models/video.dart';
 import 'package:youtubebloc/modules/favorites/favorite_bloc.dart';
-import 'package:youtubebloc/modules/favorites/favorite_module.dart';
 
 class VideoTile extends StatelessWidget {
-
   final Video video;
-  final favBloc = FavoriteModule.to.get<FavoriteBloc>();
 
   VideoTile(this.video);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 16.0 / 9.0,
-            child: Image.network(
-              video.thumb,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Row(
+    final favBloc = Modular.get<FavoriteBloc>();
+
+    return GestureDetector(
+        onTap: () {
+          FlutterYoutube.playYoutubeVideoById(
+              apiKey: API_KEY, videoId: video.id);
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Expanded(
-                  child: Column(
+              AspectRatio(
+                aspectRatio: 16.0 / 9.0,
+                child: Image.network(
+                  video.thumb,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
@@ -47,30 +54,29 @@ class VideoTile extends StatelessWidget {
                       )
                     ],
                   )),
-              StreamBuilder<Map<String, Video>>(
-                  stream: favBloc.ouFav,
-                  initialData: {},
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return IconButton(
-                        icon: Icon(snapshot.data.containsKey(video.id)
-                            ? Icons.star
-                            : Icons.star_border),
-                        color: Colors.white,
-                        iconSize: 30,
-                        onPressed: () {
-                          favBloc.toggleFavorite(video);
-                        },
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  }
+                  StreamBuilder<Map<String, Video>>(
+                      stream: favBloc.ouFav,
+                      initialData: {},
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return IconButton(
+                            icon: Icon(snapshot.data.containsKey(video.id)
+                                ? Icons.star
+                                : Icons.star_border),
+                            color: Colors.white,
+                            iconSize: 30,
+                            onPressed: () {
+                              favBloc.toggleFavorite(video);
+                            },
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      })
+                ],
               )
             ],
-          )
-        ],
-      ),
-    );
+          ),
+        ));
   }
 }

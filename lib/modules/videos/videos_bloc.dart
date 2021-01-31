@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:youtubebloc/api/api.dart';
 import 'package:youtubebloc/models/video.dart';
 
 class VideosBloc implements Disposable {
-
   API api;
   List<Video> videos;
 
-  final StreamController<List<Video>> _videosController = StreamController<List<Video>>();
+  final StreamController<List<Video>> _videosController =
+      BehaviorSubject<List<Video>>();
   Stream get outVideos => _videosController.stream;
 
-  final StreamController<String> _searchController = StreamController<String>();
+  final StreamController<String> _searchController = BehaviorSubject<String>();
   Sink get inSearch => _searchController.sink;
 
   VideosBloc() {
@@ -30,7 +31,6 @@ class VideosBloc implements Disposable {
 
     _videosController.sink.add(videos);
   }
-
 
   @override
   void dispose() {

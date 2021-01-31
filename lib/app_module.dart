@@ -1,23 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:youtubebloc/app_widget.dart';
-import 'modules/app_bloc.dart';
-import 'modules/favorites/favorite_module.dart';
-import 'modules/home/home_module.dart';
-import 'modules/videos/videos_module.dart';
+import 'package:youtubebloc/constants.dart';
+import 'package:youtubebloc/modules/favorites/favorite_page.dart';
+import 'modules/favorites/favorite_bloc.dart';
+import 'modules/videos/videos_bloc.dart';
+import 'modules/videos/videos_page.dart';
 
 class AppModule extends MainModule {
-  static Inject get to => Inject<AppModule>.of();
-
   @override
-  List<Bind> get binds => [Bind((i) => AppBloc())];
-
-  @override
-  List<Router> get routers => [
-        Router('/', module: HomeModule()),
-        Router('/favorites', module: FavoriteModule()),
-        Router('/videos', module: VideosModule())
+  List<ModularRouter> get routers => [
+        ModularRouter(HOME_PAGE, child: (context, args) => VideosPage()),
+        ModularRouter(FAVORITES_PAGE, child: (context, args) => FavoritePage()),
       ];
 
   @override
-  Widget get bootstrap => throw BaseAppWidget();
+  Widget get bootstrap => BaseAppWidget();
+
+  @override
+  List<Bind> get binds =>
+      [Bind((i) => VideosBloc()), Bind((i) => FavoriteBloc())];
 }

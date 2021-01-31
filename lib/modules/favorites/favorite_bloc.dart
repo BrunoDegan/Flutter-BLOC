@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtubebloc/models/video.dart';
+import '../../constants.dart';
 
 class FavoriteBloc extends Disposable {
   Map<String, Video> _favorites = {};
 
   final StreamController<Map<String, Video>> _favController =
-      StreamController<Map<String, Video>>.broadcast();
-
+      BehaviorSubject<Map<String, Video>>();
   Stream<Map<String, Video>> get ouFav => _favController.stream;
 
   FavoriteBloc() {
@@ -22,7 +23,6 @@ class FavoriteBloc extends Disposable {
 
         _favController.add(_favorites);
       }
-
     });
   }
 
@@ -38,8 +38,8 @@ class FavoriteBloc extends Disposable {
   }
 
   void _saveFavorite() {
-    SharedPreferences.getInstance().then((prefs) => {
-      prefs.setString("favorites", json.encode(_favorites))
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString(FAVORITES_PAGE, json.encode(_favorites));
     });
   }
 

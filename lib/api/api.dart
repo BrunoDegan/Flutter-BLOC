@@ -1,40 +1,34 @@
 import 'dart:convert';
-
+import 'package:youtubebloc/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:youtubebloc/models/video.dart';
 
-const API_KEY = "AIzaSyCX5f-kF8uUqGIsjjomi-ObIejZIYK4cVo";
-
-//const URI2= "https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_search&type=video&key=$API_KEY&maxResults=10&pageToken=$_nextToken"
-//const URI3 = "http://suggestqueries.google.com/complete/search?hl=en&ds=yt&client=youtube&hjson=t&cp=1&q=$search&format=5&alt=json"
-
 class API {
-
   String _nextToken;
   String _search;
+  String _resultsLen = "10";
 
-  Future<List<Video>> search (String search) async {
+  Future<List<Video>> search(String search) async {
     _search = search;
-    var resultsLen = 10;
     http.Response response = await http.get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_search&type=video&key=$API_KEY&maxResults=${resultsLen.toString()}");
+        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_search&type=video&key=$API_KEY&maxResults=$_resultsLen");
     return decode(response);
   }
 
   Future<List<Video>> nextPage() async {
-    var resultsLen = 10;
-    http.Response response = await http.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_search&type=video&key=$API_KEY&maxResults=${resultsLen.toString()}&pageToken=$_nextToken");
+    http.Response response = await http.get(
+        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_search&type=video&key=$API_KEY&maxResults=$_resultsLen&pageToken=$_nextToken");
+    return decode(response);
   }
 
   List<Video> decode(http.Response response) {
     if (response.statusCode == 200) {
       var decoded = json.decode(response.body);
 
-      _nextToken = decoded["nextPageToken"];
+      List<Video> videos =
+          decoded["items"].map<Video>((map) => Video.fromJson(map)).toList();
 
-      List<Video> videos = decoded["items"].map<Video>((map) {
-        Video.fromJson(map);
-      }).toList();
+      _nextToken = decoded["nextPageToken"];
 
       return videos;
     } else {
