@@ -28,7 +28,7 @@ dependencies:
   http: ^0.12.1
   shared_preferences: ^0.5.7+3
   rxdart: ^0.24.1
-  flutter_modular: any
+  flutter_modular: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
