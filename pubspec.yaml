@@ -1,5 +1,5 @@
 name: youtubebloc
-description: Youtube Flutter Bloc  pattern
+description: Youtube Flutter
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -14,7 +14,7 @@ description: Youtube Flutter Bloc  pattern
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
   flutter:
@@ -23,11 +23,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  dio: ^3.0.4
+  dio: ^3.0.10
+  http: ^0.12.2
   flutter_youtube: ^2.0.0
-  http: ^0.12.1
-  shared_preferences: ^0.5.7+3
-  rxdart: ^0.24.1
+  shared_preferences: ^0.5.12+4
+  rxdart: ^0.25.0
   flutter_modular: ^2.0.1
 dev_dependencies:
   flutter_test:

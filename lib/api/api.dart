@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:youtubebloc/models/video.dart';
 
 class API {
-  String _nextToken;
-  String _search;
+  String _nextToken = "";
+  String _search = "";
   String _resultsLen = "10";
 
   Future<List<Video>> search(String search) async {

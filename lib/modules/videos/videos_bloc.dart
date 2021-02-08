@@ -6,8 +6,8 @@ import 'package:youtubebloc/api/api.dart';
 import 'package:youtubebloc/models/video.dart';
 
 class VideosBloc implements Disposable {
-  API api;
-  List<Video> videos;
+  API api = API();
+  List<Video> videos = List.empty();
 
   final StreamController<List<Video>> _videosController =
       BehaviorSubject<List<Video>>();
@@ -17,7 +17,6 @@ class VideosBloc implements Disposable {
   Sink get inSearch => _searchController.sink;
 
   VideosBloc() {
-    api = API();
     _searchController.stream.listen(_search);
   }
 

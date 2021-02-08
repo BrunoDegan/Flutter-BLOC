@@ -28,7 +28,7 @@ class VideosPage extends StatelessWidget {
                 stream: _favoriteBloc.ouFav,
                 builder: (context, snapshot) {
                   if (snapshot.hasData)
-                    return Text("${snapshot.data.length}");
+                    return Text("${snapshot.data?.length}");
                   else
                     return Container();
                 }),
@@ -42,9 +42,10 @@ class VideosPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
-              String result =
-                  await showSearch(context: context, delegate: DataSearchAPI());
-              if (result != null) _videosBloc.inSearch.add(result);
+              String result = await showSearch(
+                      context: context, delegate: DataSearchAPI()) ??
+                  "";
+              _videosBloc.inSearch.add(result);
             },
           )
         ],
@@ -54,7 +55,7 @@ class VideosPage extends StatelessWidget {
           stream: _videosBloc.outVideos,
           initialData: [],
           builder: (context, snapshot) {
-            if (snapshot.hasData)
+            if (snapshot.hasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   if (index < snapshot.data.length) {
@@ -75,8 +76,9 @@ class VideosPage extends StatelessWidget {
                 },
                 itemCount: snapshot.data.length + 1,
               );
-            else
+            } else {
               return Container();
+            }
           }),
     );
   }

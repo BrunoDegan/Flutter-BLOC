@@ -27,10 +27,11 @@ class FavoriteBloc extends Disposable {
   }
 
   void toggleFavorite(Video video) {
-    if (_favorites.containsKey(video.id))
+    if (_favorites.containsKey(video.id)) {
       _favorites.remove(video.id);
-    else
-      _favorites[video.id] = video;
+    } else {
+      if (video.id != null) _favorites[video.id] = video;
+    }
 
     _favController.sink.add(_favorites);
 

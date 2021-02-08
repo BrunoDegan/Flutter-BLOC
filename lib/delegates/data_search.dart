@@ -21,7 +21,7 @@ class DataSearchAPI extends SearchDelegate<String> {
         icon: AnimatedIcon(
             icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
         onPressed: () {
-          close(context, null);
+          close(context, "");
         });
   }
 
@@ -52,7 +52,7 @@ class DataSearchAPI extends SearchDelegate<String> {
                     },
                   );
                 },
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data?.length,
               );
             }
           });
@@ -60,10 +60,10 @@ class DataSearchAPI extends SearchDelegate<String> {
   }
 
   Future<List> buildSuggestionsList(String search) async {
-    String GOOGLE_API_SEARCH =
+    String googleApiSearchURL =
         "http://suggestqueries.google.com/complete/search?hl=en&ds=yt&client=youtube&hjson=t&cp=1&q=$search&format=5&alt=json";
 
-    http.Response response = await http.get(GOOGLE_API_SEARCH);
+    http.Response response = await http.get(googleApiSearchURL);
 
     if (response.statusCode == 200) {
       return json.decode(response.body)[1].map((resp) {
