@@ -1,4 +1,3 @@
-# Youtube video streaming using BLOC pattern made with Flutter
+# Fluttertube, flutter youtube stream app
 
-Youtube stream app made with Flutter using Bloc pattern
-
+Youtube video streaming using BLOC pattern made with Flutter
