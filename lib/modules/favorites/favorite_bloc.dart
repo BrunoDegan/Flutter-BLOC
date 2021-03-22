@@ -16,11 +16,12 @@ class FavoriteBloc extends Disposable {
   FavoriteBloc() {
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.getKeys().contains("favorites")) {
-        _favorites =
-            json.decode(prefs.getString("favorites")).map((key, value) {
-          return MapEntry(key, Video.fromJson(value));
-        }).cast<String, Video>();
-
+        String? favoritesUrl = prefs.getString("favorites");
+        if (favoritesUrl != null) {
+          _favorites = json.decode(favoritesUrl).map((key, value) {
+            return MapEntry(key, Video.fromJson(value));
+          }).cast<String, Video>();
+        }
         _favController.add(_favorites);
       }
     });
@@ -30,11 +31,9 @@ class FavoriteBloc extends Disposable {
     if (_favorites.containsKey(video.id)) {
       _favorites.remove(video.id);
     } else {
-      if (video.id != null) _favorites[video.id] = video;
+      if (video.id != null) _favorites[video.id!] = video;
     }
-
     _favController.sink.add(_favorites);
-
     _saveFavorite();
   }
 

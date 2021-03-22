@@ -40,15 +40,15 @@ class DataSearchAPI extends SearchDelegate<String> {
           future: buildSuggestionsList(query),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(snapshot.data[index]),
+                    title: Text(snapshot.data?[index]),
                     leading: Icon(Icons.play_arrow),
                     onTap: () {
-                      close(context, snapshot.data[index]);
+                      close(context, snapshot.data?[index]);
                     },
                   );
                 },
@@ -63,7 +63,7 @@ class DataSearchAPI extends SearchDelegate<String> {
     String googleApiSearchURL =
         "http://suggestqueries.google.com/complete/search?hl=en&ds=yt&client=youtube&hjson=t&cp=1&q=$search&format=5&alt=json";
 
-    http.Response response = await http.get(googleApiSearchURL);
+    http.Response response = await http.get(Uri.parse(googleApiSearchURL));
 
     if (response.statusCode == 200) {
       return json.decode(response.body)[1].map((resp) {

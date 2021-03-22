@@ -52,29 +52,32 @@ class VideosPage extends StatelessWidget {
       ),
       backgroundColor: Colors.black87,
       body: StreamBuilder(
-          stream: _videosBloc.outVideos,
           initialData: [],
+          stream: _videosBloc.outVideos,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              List<Video>? videoList = snapshot.data as List<Video>;
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  if (index < snapshot.data.length) {
-                    return VideoTile(snapshot.data[index]);
+                  if (index < videoList.length) {
+                    return VideoTile(videoList[index]);
                   } else if (index > 1) {
                     _videosBloc.inSearch.add(null);
-                    return Container(
-                      height: 40,
-                      width: 40,
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                    return Center(
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        ),
                       ),
                     );
                   } else {
-                    return Container();
+                    return Center(child: Container());
                   }
                 },
-                itemCount: snapshot.data.length + 1,
+                itemCount: videoList.length + 1,
               );
             } else {
               return Container();

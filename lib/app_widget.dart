@@ -9,8 +9,6 @@ class BaseAppWidget extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: HOME_PAGE,
-      navigatorKey: Modular.navigatorKey,
-      onGenerateRoute: Modular.generateRoute,
-    );
+    ).modular();
   }
 }

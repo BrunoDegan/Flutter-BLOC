@@ -20,7 +20,7 @@ class VideosBloc implements Disposable {
     _searchController.stream.listen(_search);
   }
 
-  void _search(String search) async {
+  void _search(String? search) async {
     if (search != null) {
       _videosController.sink.add([]);
       videos = await api.search(search);

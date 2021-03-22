@@ -60,7 +60,7 @@ class VideoTile extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data != null) {
                           return IconButton(
-                            icon: Icon(snapshot.data.containsKey(video.id)
+                            icon: Icon(snapshot.data!.containsKey(video.id)
                                 ? Icons.star
                                 : Icons.star_border),
                             color: Colors.white,
